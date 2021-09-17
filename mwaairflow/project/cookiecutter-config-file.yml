@@ -1,0 +1,10 @@
+# This file contains values from Cookiecutter
+
+default_context:
+  project_name: "airflowproject"
+  project_description: "Python package to orchestrate workflows on Managed Apache Airflow"
+  organization: "organization"
+  license: "Apache Software License 2.0"
+  version: "0.1.0"
+  github_name: "organization"
+  email: "hello@organization.com"
