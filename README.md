@@ -31,8 +31,8 @@ cdk deploy -c paramName=paramValue
 | Parameter  |  Description |  Default | Valid values |
 |---|---|---|---|
 | vpcId | VPC ID where the cluster will be deployed. If none creates a new one and needs the parameter **cidr** in that case| None | VPC ID |
-| cidr | The cidr for the VPC that will be created to host MWAA resources. Used only if the **vpcId** is not defined. | None | IP CIDR |
-| subnetIds | Coma separated list of subnets IDs where the cluster will be deployed. If None looks for private subnets in the same AZ | None | Subnet IDs list (coma separated) |   
+| cidr | The cidr for the VPC that will be created to host MWAA resources. Used only if the **vpcId** is not defined. | 172.31.0.0/16 | IP CIDR |
+| subnetIds | Comma separated list of subnets IDs where the cluster will be deployed. If None looks for private subnets in the same AZ | None | Subnet IDs list (coma separated) |   
 | envName | MWAA Environment Name | MwaaEnvironment | String |   
 | envTags | MWAA Environment Tags | None | json ex. '{"Environment":"MyEnv","Application":"MyApp","Reason":"Airflow"}' | 
 | environmentClass | MWAA Environment Class | mw1.small | mw1.small, mw1.medium, mw1.large |   
