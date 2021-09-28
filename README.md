@@ -74,6 +74,25 @@ This solution deploys a tutorial DAG for your teams to get started !
 ![img.png](img/mwaa_console.png)
 
 
+## Deploy your DAG using the Project CI/CD Pipeline  
+
+As part of the CDK deployment, an [AWS CodeCommit](https://aws.amazon.com/codecommit/) and an [AWS CodePipeline](https://aws.amazon.com/codepipeline/) were created in order to continuously build, test and deploy DAGs into your MWAA environment.
+To deploy the new DAG, the source code should be committed to the CodeCommit repository. This will trigger a CodePipeline run that will build, test and deploy your new DAG and make it available in your MWAA environment. 
+To do so, follow the steps below:
+
+* Login to the [CodeCommit console](https://console.aws.amazon.com/codecommit/) in your deployment region.
+* Under **Source** > **Repositories** you should see a new repository **mwaaproject**.
+    ![img.png](img/mwaa_codecommit_1.png)
+* Push your new **DAG** in **mwaaproject** repository under **dags**. You can either use the CodeCommit console or Git command-line to do so.
+    ![img.png](img/mwaa_codecommit_2.png)
+* The new commit triggers a new CodePipeline that will build, test and deploy the new DAG. To the check the Pipeline execution login to CodePipeline console. Under **Pipeline** > **Pipelines** you should see **mwaaproject-pipeline**.
+    ![img.png](img/mwaa_codepipeline_1.png)
+* Click on **mwaaproject-pipeline** name to display its details.
+    ![img.png](img/mwaa_codepipeline_2.png)
+* After checking that the pipeline run is successful, you can verify that the DAG is deployed to the S3 bucket and therefore available in MWAA Console.
+    ![img.png](img/mwaa_console_2.png)
+
+
 ## Cleanup
 To clean up the deployed resources, you can simply run the following command:  
 ````shell
