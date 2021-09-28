@@ -190,8 +190,8 @@ class AirflowEnvironmentStack(core.NestedStack):
         # Create MWAA user policy
         managed_policy = iam.ManagedPolicy(
             self,
-            "cdh-mwaa-user",
-            managed_policy_name="cdh-mwaa-user",
+            "mwaa-user",
+            managed_policy_name="mwaa-user",
             statements=[
                 iam.PolicyStatement(
                     resources=[
@@ -320,7 +320,7 @@ class AirflowEnvironmentStack(core.NestedStack):
         mwaa_env.node.add_dependency(req_deploy)
         core.CfnOutput(self, "MWAA_NAME", value=self.env_name)
         core.CfnOutput(
-            self, "cdh-user-custom-policy", value=managed_policy.managed_policy_arn
+            self, "user-custom-policy", value=managed_policy.managed_policy_arn
         )
 
     @classmethod
