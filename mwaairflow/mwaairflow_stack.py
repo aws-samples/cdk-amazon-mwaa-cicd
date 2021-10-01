@@ -56,17 +56,20 @@ class MWAAirflowStack(core.Stack):
             **kwargs
         )
 
-        AirflowProvisioningStack(
+        project_stack = AirflowProjectStack(
+            self,
+            construct_id="MWAAProjectStack",
+            mwaa_bucket=mwaa_env.bucket.bucket_name,
+            **kwargs
+        )
+
+        provisioning_stack = AirflowProvisioningStack(
             self,
             construct_id="MWAAProvisioningPipelineStack",
             vpc_id=self.vpc_id,
             cidr=self.cidr,
             **kwargs
         )
+        
+        provisioning_stack.add_dependency(project_stack)
 
-        AirflowProjectStack(
-            self,
-            construct_id="MWAAProjectStack",
-            mwaa_bucket=mwaa_env.bucket.bucket_name,
-            **kwargs
-        )
