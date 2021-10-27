@@ -22,7 +22,7 @@ class AirflowProjectStack(core.NestedStack):
         self,
         scope: core.Construct,
         construct_id: str,
-        mwaa_bucket: str,
+        mwaa_bucket: s3.Bucket,
         env=None,
         **kwargs,
     ) -> None:
@@ -75,7 +75,14 @@ class AirflowProjectStack(core.NestedStack):
 
         build_project_role.add_to_policy(
             iam.PolicyStatement(
-                effect=iam.Effect.ALLOW, resources=["*"], actions=["s3:*",],
+                effect=iam.Effect.ALLOW,
+                resources=[
+                    mwaa_bucket.bucket_arn,
+                    f"{mwaa_bucket.bucket_arn}/*",
+                    bucket.bucket_arn,
+                    f"{bucket.bucket_arn}/*",
+                ],
+                actions=["s3:*Object", "s3:ListBucket", "s3:GetBucketLocation"],
             )
         )
 
@@ -87,7 +94,9 @@ class AirflowProjectStack(core.NestedStack):
                 privileged=True, build_image=codebuild.LinuxBuildImage.AMAZON_LINUX_2_3
             ),
             environment_variables={
-                "BUCKET_NAME": codebuild.BuildEnvironmentVariable(value=mwaa_bucket),
+                "BUCKET_NAME": codebuild.BuildEnvironmentVariable(
+                    value=mwaa_bucket.bucket_name
+                ),
             },
             role=build_project_role,
             build_spec=codebuild.BuildSpec.from_object(

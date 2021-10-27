@@ -8,7 +8,6 @@ import shutil
 from aws_cdk import (
     core,
     aws_s3 as s3,
-    aws_ec2 as ec2,
     aws_s3_deployment as s3d,
     aws_iam as iam,
     aws_codepipeline as codepipeline,
@@ -25,6 +24,7 @@ class AirflowProvisioningStack(core.NestedStack):
         construct_id: str,
         vpc_id: str,
         cidr: str,
+        mwaa_bucket: s3.Bucket,
         env=None,
         **kwargs,
     ) -> None:
@@ -81,11 +81,37 @@ class AirflowProvisioningStack(core.NestedStack):
         build_project_role.add_to_policy(
             iam.PolicyStatement(
                 effect=iam.Effect.ALLOW,
+                resources=[
+                    mwaa_bucket.bucket_arn,
+                    f"{mwaa_bucket.bucket_arn}/*",
+                    bucket.bucket_arn,
+                    f"{bucket.bucket_arn}/*",
+                    "arn:aws:s3:::cdktoolkit-stagingbucket-*",
+                ],
+                actions=["s3:*Object", "s3:ListBucket", "s3:GetBucketLocation"],
+            )
+        )
+
+        build_project_role.add_to_policy(
+            iam.PolicyStatement(
+                effect=iam.Effect.ALLOW,
                 resources=["*"],
                 actions=[
-                    "s3:*",
+                    "iam:*Policy*",
+                    "iam:ListPolicies",
+                    "iam:UpdateRole*",
+                    "iam:ListRole*",
+                    "iam:GetRole*",
+                ],
+            )
+        )
+
+        build_project_role.add_to_policy(
+            iam.PolicyStatement(
+                effect=iam.Effect.ALLOW,
+                resources=["*"],
+                actions=[
                     "cloudformation:*",
-                    "iam:*",
                     "airflow:*",
                     "kms:*",
                     "ec2:Describe*",
