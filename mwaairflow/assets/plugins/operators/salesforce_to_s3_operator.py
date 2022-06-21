@@ -102,15 +102,15 @@ class SalesforceToS3Operator(BaseOperator):
     :type fmt:                  list
     :param from_date:           *(optional)* A specific datetime formatted input
                                 to run query from for incremental ingestion
-                                evaluated against SystemModStamp attribute 
-                                not compatible with query parameter and should be 
+                                evaluated against SystemModStamp attribute
+                                not compatible with query parameter and should be
                                 in datetime format (ex. 2021-01-01T00:00:00Z)
                                 *Default: None*
     :type from_date:            datetime
     :param to_date:             *(optional)* A specific datetime formatted input
                                 to run query to for incremental ingestion
-                                evaluated against SystemModStamp attribute 
-                                not compatible with query parameter and should be 
+                                evaluated against SystemModStamp attribute
+                                not compatible with query parameter and should be
                                 in datetime format (ex. 2021-01-01T00:00:00Z)
                                 *Default: None*
     :type to_date:              datetime

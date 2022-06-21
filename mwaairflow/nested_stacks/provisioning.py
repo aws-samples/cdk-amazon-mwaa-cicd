@@ -45,7 +45,15 @@ class AirflowProvisioningStack(core.NestedStack):
         )
 
         code_path = os.path.realpath(
-            os.path.abspath(os.path.join(__file__, "..", "..", "..", "dist",))
+            os.path.abspath(
+                os.path.join(
+                    __file__,
+                    "..",
+                    "..",
+                    "..",
+                    "dist",
+                )
+            )
         )
 
         assets = s3d.BucketDeployment(

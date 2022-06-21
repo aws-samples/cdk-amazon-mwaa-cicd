@@ -119,7 +119,9 @@ class AirflowEnvironmentStack(core.NestedStack):
 
         role.add_to_policy(
             iam.PolicyStatement(
-                resources=["*"], actions=["sts:AssumeRole"], effect=iam.Effect.ALLOW,
+                resources=["*"],
+                actions=["sts:AssumeRole"],
+                effect=iam.Effect.ALLOW,
             )
         )
 
@@ -213,7 +215,9 @@ class AirflowEnvironmentStack(core.NestedStack):
                     effect=iam.Effect.ALLOW,
                 ),
                 iam.PolicyStatement(
-                    resources=[f"arn:aws:s3:::{self.bucket.bucket_name}/dags/*",],
+                    resources=[
+                        f"arn:aws:s3:::{self.bucket.bucket_name}/dags/*",
+                    ],
                     actions=["s3:PutObject"],
                     effect=iam.Effect.ALLOW,
                 ),
@@ -237,7 +241,8 @@ class AirflowEnvironmentStack(core.NestedStack):
             "DeployPlugin",
             sources=[
                 s3deploy.Source.asset(
-                    "./mwaairflow/assets", exclude=["**", "!plugins.zip"],
+                    "./mwaairflow/assets",
+                    exclude=["**", "!plugins.zip"],
                 )
             ],
             destination_bucket=self.bucket,
@@ -308,12 +313,15 @@ class AirflowEnvironmentStack(core.NestedStack):
             source_bucket_arn=self.bucket.bucket_arn,
             webserver_access_mode=access_mode,
         )
+        options = {"core.lazy_load_plugins": False}
         if secrets_backend == "SecretsManager":
-            options = {
-                "secrets.backend": "airflow.contrib.secrets.aws_secrets_manager.SecretsManagerBackend",
-                "secrets.backend_kwargs": '{"connections_prefix" : "airflow/connections", "variables_prefix" : "airflow/variables"}',
-            }
-            mwaa_env.add_override("Properties.AirflowConfigurationOptions", options)
+            options.update(
+                {
+                    "secrets.backend": "airflow.contrib.secrets.aws_secrets_manager.SecretsManagerBackend",
+                    "secrets.backend_kwargs": '{"connections_prefix" : "airflow/connections", "variables_prefix" : "airflow/variables"}',
+                }
+            )
+        mwaa_env.add_override("Properties.AirflowConfigurationOptions", options)
         mwaa_env.add_override("Properties.Tags", env_tags)
         mwaa_env.node.add_dependency(self.bucket)
         mwaa_env.node.add_dependency(plugins_deploy)
