@@ -284,7 +284,7 @@ class AirflowEnvironmentStack(core.NestedStack):
             f"MWAAEnv{self.env_name}",
             name=self.env_name,
             dag_s3_path="dags",
-            airflow_version="2.0.2",
+            airflow_version="2.2.2",
             environment_class=env_class,
             max_workers=max_workers,
             execution_role_arn=role.role_arn,
