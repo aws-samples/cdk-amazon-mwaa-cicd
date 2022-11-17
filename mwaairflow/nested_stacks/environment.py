@@ -220,14 +220,7 @@ class AirflowEnvironmentStack(core.NestedStack):
                     ],
                     actions=["s3:PutObject"],
                     effect=iam.Effect.ALLOW,
-                ),
-                iam.PolicyStatement(
-                    resources=[
-                        f"arn:aws:dynamodb:{self.region}:{self.account}:table/TrainingLab11"
-                    ],
-                    actions=["dynamodb:Scan"],
-                    effect=iam.Effect.ALLOW,
-                ),
+                )
             ],
         )
 
