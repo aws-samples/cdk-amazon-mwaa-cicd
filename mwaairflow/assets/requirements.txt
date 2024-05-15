@@ -12,7 +12,7 @@ apache-airflow-providers-ssh==3.2.0
 apache-airflow-providers-common-sql==1.2.0
 boto3==1.26.7
 simplejson==3.18.1
-pymongo==3.13.0
+pymongo==4.6.3
 pymssql==2.2.5
 smart-open==6.3.0
 psycopg2==2.9.5
